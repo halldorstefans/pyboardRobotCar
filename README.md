@@ -32,7 +32,7 @@
 
 A small project to try out [pyboard](http://docs.micropython.org/en/latest/pyboard/quickref.html) and [micropython](http://docs.micropython.org/en/latest/index.html).
 
-[![Robot Car with pyboard][robot-car]](https://hsblogimages.blob.core.windows.net/ghost/pyboardChassis.jpg)
+![Robot Car with pyboard](https://hsblogimages.blob.core.windows.net/ghost/pyboardChassis.jpg)
 
 See articles about process:
 
