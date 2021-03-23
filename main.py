@@ -1,28 +1,34 @@
-from pyb import Pin, Timer
-import utime
+# main.py -- put your code here!
+from pyb import Pin, Timer, ADC
 
-counter = 0
+p1 = Pin('X1') # X1 is rightMotor
+p3 = Pin('X3') # X3 is leftMotor
 
-p1 = Pin('X1') # X1 has TIM2, CH1
-p3 = Pin('X3') # X3 has TIM2, CH3
+tim = Timer(2, freq=1000)
 
-tim2 = Timer(2, freq=1000)
+rightMotor = tim.channel(1, Timer.PWM, pin=p1)
+leftMotor = tim.channel(3, Timer.PWM, pin=p3)
 
-ch1 = tim2.channel(1, Timer.PWM, pin=p1)
-ch3 = tim2.channel(3, Timer.PWM, pin=p3)
+rightLineSensor = ADC(Pin('X5'))
+leftLineSensor = ADC(Pin('X6'))
 
-while counter < 10:
-    ch1.pulse_width_percent(50)
-    ch3.pulse_width_percent(50)
+rightMotor.pulse_width_percent(0)
+leftMotor.pulse_width_percent(0)
 
-    utime.sleep_ms(1000)
+while (True):
+    rightDetect = rightLineSensor.read()
+    leftDetect = leftLineSensor.read()
 
-    ch1.pulse_width_percent(10)
-    ch3.pulse_width_percent(50)
+    if (leftDetect > 1000 and rightDetect > 1000):
+        rightMotor.pulse_width_percent(50)
+        leftMotor.pulse_width_percent(50)
 
-    utime.sleep_ms(500)
+    if (leftDetect > 1000 and rightDetect < 1000):
+        rightMotor.pulse_width_percent(10)
 
-    counter += 1
+    if (leftDetect < 1000 and rightDetect > 1000):
+        leftMotor.pulse_width_percent(10)
 
-ch1.pulse_width_percent(0)
-ch3.pulse_width_percent(0)
+    if (leftDetect < 1000 and rightDetect < 1000):
+        rightMotor.pulse_width_percent(0)
+        leftMotor.pulse_width_percent(0)
